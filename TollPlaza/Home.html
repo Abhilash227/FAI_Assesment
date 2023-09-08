@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <script src="/JQuery/jquery-3.7.1.min.js"></script>
+    <script src="TollPlaza.js"></script>
+    <title>Toll Plaza Management System</title>
+    <script>
+        const mgrObj = new TollManager();
+         $().ready(()=>
+       {
+            $("div").fadeOut(2000);
+            $("a:eq(0)").click(()=>
+            {
+                $("div").fadeOut(2000);
+                $("div:eq(0)").fadeIn(2000);
+                
+            })
+            $("a:eq(1)").click(()=>
+            {
+                $("div").fadeOut(2000);
+                $("div:eq(1)").fadeIn(2000);
+                populate();
+            })
+            $("a:eq(2)").click(()=>
+            {
+                $("div").fadeOut(2000);
+                $("div:eq(2)").fadeIn(2000);
+            })
+            $("a:eq(3)").click(()=>
+            {
+                $("div").fadeOut(2000);
+                $("div:eq(3)").fadeIn(2000);
+            })
+            $("a:eq(4)").click(()=>
+            {
+                $("div").fadeOut(2000);
+                $("div:eq(4)").fadeIn(2000);
+            })
+            $("#AddBtn").click(()=>
+            {
+                AddEntry();
+            })
+
+            $("#SearchCategory").click(()=>
+            {
+                // alert("hello");
+                const cat =$("#VehicleCategory").val()
+                // alert(cat);
+                var records=mgrObj.findEntryByCategory(cat);
+                alert(records[0].num);
+                for(const rec of records)
+                {
+                    if(rec!=null)
+                    {
+                        const tr=`<tr><td>${rec.num}</td><td>${rec.category}</td><td>${rec.amount}</td>`;
+                        $("table").append(tr);
+                    }
+                }
+                $("div:eq(1)").fadeIn(2000);
+            })
+            $("#SearchCategoryAmount").click(()=>
+            {
+                FindAmountByCategory();
+
+            })
+            $("#SearchRegistrationAmount").click(()=>
+            {
+                FindByRegistrationNumber();
+
+            })
+        });
+        function AddEntry()
+        {
+            var amt=0;
+            const VehicleNumber = $("#txtNamePlate").val();
+            const VehicleType=$("#slVehicleCategory").val();
+            switch(VehicleType)
+                {
+                    case "Bike":
+                        amt=50
+                        break;
+                    case "LMV":
+                        amt=100
+                        break;
+                    case "HMV":
+                        amt=200
+                        break;
+                    case "Heavy Trucks":
+                        amt=300
+                        break;
+                    default:break
+                }
+            const entry = new Entry(VehicleNumber,VehicleType,amt);
+            mgrObj.addNewEnrty(entry);
+            
+        }
+        function FindAmountByCategory()
+        {
+            var sum=0;
+            const cat = $("#AmountVehicleCategory").val();
+            // alert(cat);
+            var records=mgrObj.findEntryByCategory(cat);
+            // alert(records[0].amount)
+            for(const rec of records)
+                {
+                    if(rec!=null)
+                    {
+                        sum=sum+rec.amount;
+                    }
+                }
+            
+            document.getElementById("sum").innerText="The total amount obtained by "+cat+ ": "+sum.toString();     
+        }
+        function FindByRegistrationNumber()
+        {
+            const cat = $("#RegistrationNumber").val();
+            // alert(cat);
+            var sum=0;
+            var records=mgrObj.findEntryByRegistration(cat);
+            alert(records[0].amount)
+            for(const rec of records)
+                {
+                    if(rec!=null)
+                    {
+                        sum=sum+rec.amount;
+                    }
+                }
+                alert(sum);
+                document.getElementById("sumadd").innerText="The total amount obtained from this vehicle is"+ sum.toString();   
+        }
+        function populate()
+       {
+        var records=mgrObj.getAllEntries();
+        $("table").find("tr:gt(0)").remove();
+        for(const rec of records)
+        {
+            if(rec!=null)
+            {
+                const tr=`<tr><td>${rec.num}</td><td>${rec.category}</td><td>${rec.amount}</td></tr>`;
+                $("table").append(tr);
+            }      
+         }
+            
+        }
+    </script>
+</head>
+<body>
+    <h1>Navayuga Infrastructure Tolling Company</h1>
+    <hr>
+    <nav>
+        <a href="#">Add a Entry</a>
+        <a href="#">List all entries</a>
+        <a href="#">Find a Entry</a>
+        <a href="#">Find Total Amount By Category</a>
+        <a href="#">Find Total Amount By Vehicle Number</a>
+    </nav>
+    <div>
+        <h1>Make a new Entry</h1>
+        <section>
+            <p>
+                Enter the Vehicle number:<input type="text" id="txtNamePlate"/>
+            </p>
+            <p>
+                Select the type of vehicle:<select id="slVehicleCategory">
+                    <option>Bike</option>
+                    <option>LMV</option>
+                    <option>HMV</option>
+                    <option>Heavy Trucks</option>
+                </select>
+            </p>
+            <p>
+                <button id="AddBtn">Add Entry</button>
+            </p>    
+        </section>
+    </div>
+    <div>
+        <h2>List of All Entries</h2>
+        <table border="1px" width="100%">
+            <tr><th>Vehicle Number</th><th>Vehicle Category</th><th>Amount</th></tr>
+        </table>
+    </div>
+    <div>
+        <section>
+            Select the type of vehicle:<select id="VehicleCategory">
+                <option>Bike</option>
+                <option>LMV</option>
+                <option>HMV</option>
+                <option>Heavy Trucks</option>
+            </select>
+        </section>
+        <button id="SearchCategory">Search</button>
+    </div>
+    <div>
+        <section>
+            Select the type of vehicle:<select id="AmountVehicleCategory">
+                <option>Bike</option>
+                <option>LMV</option>
+                <option>HMV</option>
+                <option>Heavy Trucks</option>
+            </select>
+        </section>
+        <button id="SearchCategoryAmount">Search</button>
+        <span width=100% id="sum">
+        </span> 
+    </div>
+    <div>
+        <input type="Text" id="RegistrationNumber">
+        <button id="SearchRegistrationAmount">Search</button>
+        <span width=100% id="sumadd">
+        </span> 
+    </div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+body{
+    background-color: bisque;
+    color: brown;
+
+}
+
+h1,h2{
+    text-align:center;
+}
+
+div{
+    width:45%;
+    display:inline-block;
+    border: 2px dotted green;
+    vertical-align: top;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    /* display:"none"; */
+}
+
+a{
+    width:100px;
+    height:50px;
+    color: darkblue;
+    width:200px;
+}
+nav{
+    text-align: center;
+    
+}
+
+a:hover 
+{
+    color:aliceblue;
+}
+
+i{
+    font-size: 0.8pm;
+}
+
+footer>p{
+    font-style: italic;
+    font-size: 0.8pm;
+    bottom:0;
+    text-align: center;
+    position: fixed;
+    width:100%;
+}
+ul.menu{
+    display:inline-block;
+   list-style-type: none;
+}
+tr{
+    height: 45px;
+}
+.input
+{
+    height: 20pt;
+    width:80px;
+}
+#search{
+    margin-left:200px;
+}
+span{
+    display:block;
+}
